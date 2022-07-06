@@ -2,49 +2,82 @@
 namespace lib;
 use db\UserQuery;
 use model\UserModel;
+use Throwable;
 
 class Auth {
     public static function login($id,$pwd){
-        $is_success = false;
+        try {
 
-        $user = UserQuery::fetchById($id);
+            $is_success = false;
 
-        if(!empty($user) && $user->del_flg !== 1){
+            $user = UserQuery::fetchById($id);
 
-            if(password_verify($pwd,$user->pwd)){
-                $is_success = true;
-                UserModel::setSession($user);
+            if(!empty($user) && $user->del_flg !== 1){
+
+                if(password_verify($pwd,$user->pwd)){
+                    $is_success = true;
+                    UserModel::setSession($user);
+                }else{
+                    echo 'パスワードが一致しません。';
+                }
             }else{
-                echo 'パスワードが一致しません。';
+                echo 'ユーザが見つかりません。';
             }
-        }else{
-            echo 'ユーザが見つかりません。';
+
+        } catch(Throwable $e){
+
+            $is_success = false;
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            Msg::push(Msg::ERROR, 'ログイン処理でエラーが発生しました。少し時間を置いてからお試しください。');
+
         }
+
         return $is_success;
     }
 
     public static function regist($user){
-       $is_success = false;
 
-       $exist_user = UserQuery::fetchById($user->id);
+        try {
+            $is_success = false;
 
-       if(!empty($exist_user)){
-            echo 'ユーザが既に存在しています。';
-            return false;
-       }
+            $exist_user = UserQuery::fetchById($user->id);
 
-       $is_success = UserQuery::insert($user);
+            if(!empty($exist_user)){
+                    echo 'ユーザが既に存在しています。';
+                    return false;
+            }
 
-       if($is_success){
-            UserModel::setSession($user);
-            $_SESSION['user'] = $user;
-       }
+            $is_success = UserQuery::insert($user);
+
+            if($is_success){
+                    UserModel::setSession($user);
+                    $_SESSION['user'] = $user;
+            }
+
+        } catch(Throwable $e) {
+
+            $is_success = false;
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            Msg::push(Msg::ERROR, 'ユーザ登録でエラーが発生しました。少し時間を置いてからお試しください。');
+
+        }
 
        return $is_success;
     }
 
     public static function isLogin() {
-        $user = UserModel::getSession();
+        try {
+
+            $user = UserModel::getSession();
+
+        } catch(Throwable $e) {
+
+            UserModel::clearSession();
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            Msg::push(Msg::ERROR, 'エラーが発生しました。再ログインを実施してください。');
+            return false;
+            
+        }
 
         if(isset($user)) {
             return true;

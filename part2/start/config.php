@@ -11,3 +11,6 @@ define('SOURCE_BASE', __DIR__ . '/php/');
 // 遷移先の定数化
 define('GO_HOME','home');
 define('GO_REFERER','referer');
+
+// DEBUGフラグの定数化
+define('DEBUG',true);

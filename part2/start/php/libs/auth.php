@@ -7,6 +7,10 @@ use Throwable;
 class Auth {
     public static function login($id,$pwd){
         try {
+            if(!(UserModel::validateId($id)
+            * UserModel::validatePwd($pwd))){
+            return false;
+            }
 
             $is_success = false;
 
@@ -39,7 +43,9 @@ class Auth {
 
         try {
 
-            if(!$user->isValidId()){
+            if(!($user->isValidId()
+                * $user->isValidPwd()
+                * $user->isValidNickname())){
                 return false;
             }
 
@@ -89,5 +95,19 @@ class Auth {
         } else {
             return false;
         }
+    }
+
+    public static function logout() {
+        try {
+
+            UserModel::clearSession();
+
+        } catch(Throwable $e){
+
+            Msg::push(Msg::DEBUG,$e->getMessage());
+            return false;
+        }
+
+        return true;
     }
 }

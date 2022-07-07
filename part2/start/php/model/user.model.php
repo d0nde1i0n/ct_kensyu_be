@@ -11,10 +11,6 @@ class Usermodel extends AbstractModel {
 
     protected static $SESSION_NAME = '_user';
 
-    public function isValidId(){
-        return static::validateId($this->id);
-    }
-
     // ユーザIDのバリデーションチェック
     public static function validateId($val){
         $res = true;
@@ -30,12 +26,72 @@ class Usermodel extends AbstractModel {
                 $res = false;
             }
 
-            if(!preg_match("/^[a-zA-Z0-9]+$/",$val)){
+            if(!is_alnum($val)){
                 Msg::push(Msg::ERROR, 'ユーザIDは半角英数字で入力してください。');
                 $res = false;
             }
         }
 
         return $res;
+    }
+
+    public function isValidId(){
+        return static::validateId($this->id);
+    }
+
+
+    // パスワードのバリデーションチェック
+    public static function validatePwd($val){
+        $res = true;
+
+        if(empty($val)){
+
+            Msg::push(Msg::ERROR,'パスワードを入力してください。');
+            $res = false;
+
+        } else {
+
+            if(strlen($val) < 4){
+                Msg::push(Msg::ERROR,'パスワードは4桁以上で入力してください。');
+                $res = false;
+            }
+
+            if(!is_alnum($val)){
+                Msg::push(Msg::ERROR,'パスワードは半角英数字で入力してください。');
+                $res = false;
+            }
+        }
+
+        return $res;
+    }
+
+    public function isValidPwd(){
+        return static::validatePwd($this->pwd);
+    }
+
+    // ニックネームのバリデーションチェック
+    public static function validateNickname($val){
+        $res = true;
+
+        if(empty($val)){
+            Msg::push(Msg::ERROR,'ニックネームを入力してください。');
+            $res = false;
+        } else {
+            if(mb_strlen($val) > 10){
+                Msg::push(Msg::ERROR,'ニックネームは10文字以下で入力してください。');
+                $res = false;
+            }
+
+            if(!is_alnum($val)){
+                Msg::push(Msg::ERROR,'ニックネームは半角英数字で入力してください。');
+                $res = false;
+            }
+        }
+
+        return $res;
+    }
+
+    public function isValidNickname(){
+        return static::validateNickname($this->nickname);
     }
 }

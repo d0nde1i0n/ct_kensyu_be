@@ -9,8 +9,6 @@ function route($rpath, $method) {
 
     try {
 
-        throw new Error();
-
         if($rpath === '') {
             $rpath = 'home';
         }

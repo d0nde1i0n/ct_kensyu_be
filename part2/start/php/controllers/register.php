@@ -17,10 +17,13 @@ function post() {
     $user->nickname = get_param('nickname','');
 
     if(Auth::regist($user)){
+
+        Msg::push(Msg::INFO,"{$user->nickname}さん、ようこそ。");
         redirect(GO_HOME);
-        echo '登録成功';
+
     }else{
+
         redirect(GO_REFERER);
-        echo '登録失敗';
+
     }
 }

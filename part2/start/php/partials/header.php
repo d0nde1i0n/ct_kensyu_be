@@ -14,8 +14,4 @@
 
     Msg::flush();
 
-    if(Auth::isLogin()){
-        echo 'ログイン中です。';
-    } else {
-        echo 'ログインしていません。';
-    }
+    ?>

@@ -22,10 +22,10 @@ class Auth {
                     $is_success = true;
                     UserModel::setSession($user);
                 }else{
-                    echo 'パスワードが一致しません。';
+                    Msg::push(Msg::ERROR,'パスワードが一致しません。');
                 }
             }else{
-                echo 'ユーザが見つかりません。';
+                Msg::push(Msg::ERROR,'ユーザが見つかりません。') ;
             }
 
         } catch(Throwable $e){
@@ -54,8 +54,8 @@ class Auth {
             $exist_user = UserQuery::fetchById($user->id);
 
             if(!empty($exist_user)){
-                    echo 'ユーザが既に存在しています。';
-                    return false;
+                Msg::push(Msg::ERROR,'ユーザが既に存在しています。');
+                return false;
             }
 
             $is_success = UserQuery::insert($user);

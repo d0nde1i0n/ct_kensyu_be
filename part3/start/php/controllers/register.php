@@ -8,7 +8,7 @@ use model\UserModel;
 
 function get()
 {
-    require_once SOURCE_BASE . 'views/register.php';
+    \view\register\index();
 }
 
 function post()
@@ -22,10 +22,10 @@ function post()
 
         Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
         redirect(GO_HOME);
-       
+
     } else {
 
         redirect(GO_REFERER);
-        
+
     }
 }

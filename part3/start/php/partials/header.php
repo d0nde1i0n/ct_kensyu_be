@@ -1,7 +1,11 @@
 <?php
+namespace partials;
+
     use lib\Auth;
     use lib\Msg;
-    ?>
+
+    function header() {
+?>
 
 <!DOCTYPE html>
 <html>
@@ -36,4 +40,5 @@
 
 <?php
     Msg::flush();
-    ?>
+    }
+?>

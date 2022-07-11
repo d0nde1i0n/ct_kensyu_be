@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace controller\login;
 
 use lib\Auth;
@@ -7,12 +7,12 @@ use model\UserModel;
 
 function get() {
 
-    require_once SOURCE_BASE . 'views/login.php';
-
+    \view\login\index();
+    
 }
 
 function post() {
-    
+
     $id = get_param('id', '');
     $pwd = get_param('pwd', '');
 

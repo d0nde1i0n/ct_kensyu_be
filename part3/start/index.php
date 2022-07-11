@@ -18,6 +18,9 @@ require_once SOURCE_BASE . 'libs/message.php';
 require_once SOURCE_BASE . 'db/datasource.php';
 require_once SOURCE_BASE . 'db/user.query.php';
 
+// View
+require_once SOURCE_BASE . 'views/login.php';
+
 use function lib\route;
 
 session_start();
@@ -28,14 +31,14 @@ try {
 
     $rpath = str_replace(BASE_CONTEXT_PATH, '', CURRENT_URI);
     $method = strtolower($_SERVER['REQUEST_METHOD']);
-    
+
     route($rpath, $method);
-    
+
     require_once SOURCE_BASE . 'partials/footer.php';
 
 } catch(Throwable $e) {
 
     die('<h1>何かが凄くおかしいようです。</h1>');
-    
+
 }
 

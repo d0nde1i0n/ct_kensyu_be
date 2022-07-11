@@ -11,7 +11,7 @@ function index($topics)
         foreach($topics as $topic) {
 
             $url = get_url('topic/edit?topic_id=' . $topic->id);
-            \partials\topic_list_item($topic,$url);
+            \partials\topic_list_item($topic,$url,true);
         } ?>
     </ul>
 <?php

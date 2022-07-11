@@ -3,6 +3,7 @@
 namespace lib;
 
 use db\UserQuery;
+use lib\Auth as LibAuth;
 use model\UserModel;
 use Throwable;
 
@@ -96,12 +97,12 @@ class Auth
         } else {
             return false;
         }
-        
+
     }
 
     public static function logout() {
         try {
-            
+
             UserModel::clearSession();
 
         } catch (Throwable $e) {
@@ -112,5 +113,12 @@ class Auth
         }
 
         return true;
+    }
+
+    public static function requireLogin() {
+        if(!static::isLogin()){
+            Msg::push(Msg::ERROR,'ログインしてください。');
+            redirect('login');
+        }
     }
 }

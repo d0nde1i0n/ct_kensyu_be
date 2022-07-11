@@ -12,6 +12,7 @@ class TopicModel extends AbstractModel {
     public int $likes;
     public int $dislikes;
     public string $user_id;
+    public string $nickname;
     public int $del_flg;
 
     protected static $SESSION_NAME = '_topic';

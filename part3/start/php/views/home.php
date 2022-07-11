@@ -1,6 +1,20 @@
+<?php
 
-    <h1>TOPページ</h1>
-    <!-- <img src="<?php echo BASE_IMAGE_PATH ?>logo.svg" alt=""> -->
-<form action="<?php echo BASE_CONTEXT_PATH; ?>login" method="POST">
-    <input type="submit">
-</form>
+namespace view\home;
+
+function index($topics)
+{
+    $topic = array_shift($topics);
+    \partials\topic_header_item($topic);
+?>
+    <ul class="container">
+        <?php
+        foreach ($topics as $topic) {
+
+            $url = get_url('topic/edit?topic_id=' . $topic->id);
+            \partials\topic_list_item($topic, $url);
+        } ?>
+    </ul>
+<?php
+}
+?>

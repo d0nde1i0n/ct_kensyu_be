@@ -21,11 +21,15 @@ function redirect($path) {
         $path = get_url($path);
 
     }
-    
+
     header("Location: {$path}");
 
     die();
 
+}
+
+function the_url($path) {
+    echo get_url($path);
 }
 
 function get_url($path) {
@@ -37,5 +41,5 @@ function get_url($path) {
 function is_alnum($val) {
 
     return preg_match("/^[a-zA-Z0-9]+$/", $val);
-    
+
 }

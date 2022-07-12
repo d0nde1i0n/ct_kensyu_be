@@ -88,7 +88,7 @@ class TopicQuery {
 
     public static function isUserOwnTopic($topic_id,$user) {
 
-        if(!(TopicModel::validatedId($topic_id) && $user->isValidId())) {
+        if(!(TopicModel::validateId($topic_id) && $user->isValidId())) {
             return false;
         }
 
@@ -111,7 +111,11 @@ class TopicQuery {
 
     public static function update($topic)
     {
-        // 値のチェック
+        if(!($topic->isValidId()
+            * $topic->isValidTitle()
+            * $topic->isValidPublished())){
+            return false;
+        }
 
         $db = new DataSource;
         $sql = '
@@ -127,7 +131,11 @@ class TopicQuery {
 
     public static function insert($topic,$user) {
 
-        // 値のチェック
+        if(!($user->isValidId()
+            * $topic->isValidTitle()
+            * $topic->isValidPublished())){
+            return false;
+        }
 
         $db = new DataSource;
         $sql = 'insert into topics(title, published, user_id) values (:title, :published, :user_id)';

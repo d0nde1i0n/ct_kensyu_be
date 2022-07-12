@@ -125,18 +125,18 @@ class TopicQuery {
         ]);
     }
 
-    // public static function insert($user) {
+    public static function insert($topic,$user) {
 
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values (:id, :pwd, :nickname)';
+        // 値のチェック
 
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
+        $db = new DataSource;
+        $sql = 'insert into topics(title, published, user_id) values (:title, :published, :user_id)';
 
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname,
-    //     ]);
+        return $db->execute($sql, [
+            ':title' => $topic->title,
+            ':published' => $topic->published,
+            ':user_id' => $user->id
+        ]);
 
-    // }
+    }
 }

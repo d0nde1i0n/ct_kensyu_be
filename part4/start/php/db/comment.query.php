@@ -1,24 +1,24 @@
-<?php 
+<?php
 namespace db;
 
 use db\DataSource;
 use model\CommentModel;
 
 class CommentQuery {
-    
+
     public static function fetchByTopicId($topic) {
 
         if(!$topic->isValidId()) {
             return false;
         }
-        
+
         $db = new DataSource;
         $sql = '
-        select 
-            c.*, u.nickname 
+        select
+            c.*, u.nickname
         from comments c
-        inner join users u 
-            on c.user_id = u.id 
+        inner join users u
+            on c.user_id = u.id
         where c.topic_id = :id
             and c.body != ""
             and c.del_flg != 1
@@ -35,18 +35,28 @@ class CommentQuery {
     }
 
 
-    // public static function insert($user) {
+    public static function insert($comment) {
 
-    //     $db = new DataSource;
-    //     $sql = 'insert into users(id, pwd, nickname) values (:id, :pwd, :nickname)';
+        if(!($comment->isValidTopicId()
+            * $comment->isValidBody()
+            * $comment->isValidAgree())){
+            return false;
+        }
 
-    //     $user->pwd = password_hash($user->pwd, PASSWORD_DEFAULT);
+        $db = new DataSource;
+        
+        $sql = 'insert into comments
+            (topic_id, agree, body, user_id)
+        values
+            (:topic_id, :agree, :body, :user_id)
+        ';
 
-    //     return $db->execute($sql, [
-    //         ':id' => $user->id,
-    //         ':pwd' => $user->pwd,
-    //         ':nickname' => $user->nickname,
-    //     ]);
+        return $db->execute($sql, [
+            ':topic_id' => $comment->topic_id,
+            ':agree' => $comment->agree,
+            ':body' => $comment->body,
+            ':user_id' => $comment->user_id
+        ]);
 
-    // }
+    }
 }

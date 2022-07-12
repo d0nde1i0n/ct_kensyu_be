@@ -2,9 +2,14 @@
 namespace controller\topic\detail;
 
 use db\CommentQuery;
-use lib\Msg;
 use db\TopicQuery;
+use db\DataSource;
+use lib\Msg;
+use lib\Auth;
+use model\CommentModel;
 use model\TopicModel;
+use model\UserModel;
+use Throwable;
 
 function get() {
 
@@ -23,4 +28,46 @@ function get() {
 
     \view\topic\detail\index($fetchedTopic, $comments);
 
+}
+
+function post() {
+    Auth::requireLogin();
+
+    $comment = new CommentModel;
+    $comment->topic_id = get_param('topic_id',null);
+    $comment->agree = get_param('agree',null);
+    $comment->body = get_param('body',null);
+
+    $user = UserModel::getSession();
+    $comment->user_id = $user->id;
+
+    try{
+
+        $db = new DataSource;
+
+        $db->begin();
+
+        $is_success = TopicQuery::incrementLikesOrDislikes($comment);
+
+        if($is_success && !empty($comment->body)){
+            $is_success = CommentQuery::insert($comment);
+        }
+
+    } catch(Throwable $e) {
+
+        Msg::push(Msg::DEBUG,$e->getMessage());
+        $is_success = false;
+
+    } finally {
+
+        if($is_success){
+            Msg::push(Msg::INFO,'コメントの登録に成功しました。');
+            $db->commit();
+        } else {
+            Msg::push(Msg::ERROR,'コメントの登録に失敗しました。');
+            $db->rollback();
+        }
+    }
+
+    redirect('topic/detail?topic_id=' . $comment->topic_id);
 }

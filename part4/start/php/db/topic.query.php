@@ -147,4 +147,24 @@ class TopicQuery {
         ]);
 
     }
+
+    public static function incrementLikesOrDislikes($comment)
+    {
+        if(!($comment->isValidTopicId()
+            * $comment->isValidAgree())){
+            return false;
+        }
+
+        $db = new DataSource;
+
+        if($comment->agree){
+            $sql = 'update topics set likes = likes + 1 where id = :topic_id;';
+        } else {
+            $sql = 'update topics set dislikes = dislikes + 1 where id = :topic_id;';
+        }
+
+        return $db->execute($sql, [
+            ':topic_id' => $comment->topic_id
+        ]);
+    }
 }

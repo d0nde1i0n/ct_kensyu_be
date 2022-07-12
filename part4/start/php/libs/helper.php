@@ -21,7 +21,7 @@ function redirect($path) {
         $path = get_url($path);
 
     }
-    
+
     header("Location: {$path}");
 
     die();
@@ -41,5 +41,23 @@ function get_url($path) {
 function is_alnum($val) {
 
     return preg_match("/^[a-zA-Z0-9]+$/", $val);
-    
+
+}
+
+function escape($data) {
+    if(is_array($data)) {
+
+        foreach($data as $prop => $val) {
+            $data[$prop] = escape($data);
+        }
+
+    } elseif (is_object($data)) {
+
+        foreach($data as $prop => $val) {
+            $data->$prop = escape($data);
+        }
+
+    } else {
+        return htmlspecialchars($data,ENT_QUOTES,'UTF-8');
+    }
 }

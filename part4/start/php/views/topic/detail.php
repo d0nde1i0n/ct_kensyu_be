@@ -4,11 +4,14 @@ namespace view\topic\detail;
 
 function index($topic, $comments)
 {
+    $topic = escape($topic);
+    $comments = escape($comments);
+
     \partials\topic_header_item($topic, false);
 ?>
     <ul class="list-unstyled">
         <?php foreach($comments as $comment) : ?>
-            <?php 
+            <?php
                     $agree_label = $comment->agree ? '賛成' : '反対';
                     $agree_cls = $comment->agree ? 'badge-success' : 'badge-danger';
                 ?>

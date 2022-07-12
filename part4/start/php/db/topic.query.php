@@ -108,6 +108,23 @@ class TopicQuery {
         return !empty($result) && $result['count'] != 0;
 
     }
+
+    public static function update($topic)
+    {
+        // 値のチェック
+
+        $db = new DataSource;
+        $sql = '
+        update topics set published = :published,title = :title
+        where id = :id;';
+
+        return $db->execute($sql, [
+            ':published' => $topic->published,
+            ':title' => $topic->title,
+            ':id' => $topic->id
+        ]);
+    }
+
     // public static function insert($user) {
 
     //     $db = new DataSource;

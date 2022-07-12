@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace model;
 
 use lib\Msg;
@@ -18,9 +18,11 @@ class TopicModel extends AbstractModel {
     protected static $SESSION_NAME = '_topic';
 
     public function isValidId() {
-
         return true;
-        
+    }
+
+    public static function validatedId($val) {
+        return true;
     }
 
     // public static function validateId($val) {
@@ -47,7 +49,7 @@ class TopicModel extends AbstractModel {
 
     //     return $res;
     // }
-    
+
     // public static function validatePwd($val)
     // {
     //     $res = true;
@@ -64,8 +66,8 @@ class TopicModel extends AbstractModel {
     //             Msg::push(Msg::ERROR, 'パスワードは４桁以上で入力してください。');
     //             $res = false;
 
-    //         } 
-            
+    //         }
+
     //         if(!is_alnum($val)) {
 
     //             Msg::push(Msg::ERROR, 'パスワードは半角英数字で入力してください。');
@@ -98,8 +100,8 @@ class TopicModel extends AbstractModel {
 
     //             Msg::push(Msg::ERROR, 'ニックネームは１０桁以下で入力してください。');
     //             $res = false;
-                
-    //         } 
+
+    //         }
     //     }
 
     //     return $res;

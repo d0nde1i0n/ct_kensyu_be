@@ -34,6 +34,7 @@ require_once SOURCE_BASE . 'views/login.php';
 require_once SOURCE_BASE . 'views/register.php';
 require_once SOURCE_BASE . 'views/topic/archive.php';
 require_once SOURCE_BASE . 'views/topic/detail.php';
+require_once SOURCE_BASE . 'views/topic/edit.php';
 
 use function lib\route;
 
@@ -46,14 +47,14 @@ try {
     $url = parse_url(CURRENT_URI);
     $rpath = str_replace(BASE_CONTEXT_PATH, '', $url['path']);
     $method = strtolower($_SERVER['REQUEST_METHOD']);
-    
+
     route($rpath, $method);
-    
+
     \partials\footer();
-    
+
 } catch(Throwable $e) {
 
     die('<h1>何かが凄くおかしいようです。</h1>');
-    
+
 }
 

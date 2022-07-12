@@ -11,6 +11,13 @@ use Throwable;
 function get() {
     Auth::requireLogin();
 
+    $topic = TopicModel::getSessionAndFlush();
+
+    if(!empty($topic)) {
+        \view\topic\edit\index($topic,true);
+        return;
+    }
+
     $topic = new TopicModel;
     $topic->id = get_param('topic_id',null,false);
 
@@ -53,6 +60,7 @@ function post() {
     } else {
 
         Msg::push(Msg::ERROR,'トピックの更新に失敗しました。');
+        TopicModel::setSession($topic);
         redirect(GO_REFERER);
 
     }

@@ -11,10 +11,14 @@ use Throwable;
 function get() {
     Auth::requireLogin();
 
-    $topic = new TopicModel;
-    $topic->id = -1;
-    $topic->title = '';
-    $topic->published = 1;
+    $topic = TopicModel::getSessionAndFlush();
+
+    if(empty($topic)){
+        $topic = new TopicModel;
+        $topic->id = -1;
+        $topic->title = '';
+        $topic->published = 1;
+    }
 
     \view\topic\edit\index($topic,false);
 
@@ -50,6 +54,7 @@ function post() {
     } else {
 
         Msg::push(Msg::ERROR,'トピックの登録に失敗しました。');
+        TopicModel::setSession($topic);
         redirect(GO_REFERER);
 
     }

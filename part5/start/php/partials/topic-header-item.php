@@ -7,7 +7,7 @@ use lib\Auth;
 function topic_header_item($topic, $from_top_page)
 {
 ?>
-    <div class="row">
+    <div class="row my-5">
         <div class="col">
             <!-- 左側 -->
             <?php chart($topic); ?>
@@ -27,11 +27,7 @@ function chart($topic)
 {
 ?>
     <canvas id="chart" width="400" height="400" data-likes="<?php echo $topic->likes; ?>" data-dislikes="<?php echo $topic->dislikes; ?>"></canvas>
-    <style>
-        #chart {
-            background-color: gray;
-        }
-    </style>
+
 <?php
 }
 

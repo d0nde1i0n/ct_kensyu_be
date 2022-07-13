@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace partials;
 
 use lib\Auth;
@@ -39,9 +39,9 @@ function header() {
                 </nav>
             </header>
             <main class="container py-3">
-<?php 
+<?php
 
-    Msg::flush(); 
+    Msg::flush();
 }
 
 ?>

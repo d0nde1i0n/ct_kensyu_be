@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace view\login;
 
 function index() {

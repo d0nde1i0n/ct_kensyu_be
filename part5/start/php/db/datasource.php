@@ -1,7 +1,29 @@
 <?php
 namespace db;
 
+use db\PDOSingleton as DbPDOSingleton;
 use PDO;
+use PDOStatement;
+
+class PDOSingleton {
+    private static $singleton;
+
+    private function __construct($dsn, $username, $password)
+    {
+        $this->conn = new PDO($dsn, $username, $password);
+        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    }
+
+    public static function getInstanse($dsn, $username, $password) {
+        if(!isset(self::$singleton)) {
+            $instance = new DbPDOSingleton($dsn, $username, $password);
+            self::$singleton = $instance->conn;
+        }
+        return self::$singleton;
+    }
+}
 
 class DataSource {
 
@@ -10,12 +32,9 @@ class DataSource {
     public const CLS = 'cls';
 
     public function __construct($host = 'localhost', $port = '8889', $dbName = 'pollapp', $username = 'test_user', $password = 'pwd') {
-        
+
         $dsn = "mysql:host={$host};port={$port};dbname={$dbName};";
-        $this->conn = new PDO($dsn, $username, $password);
-        $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->conn = DbPDOSingleton::getInstanse($dsn, $username, $password);
 
     }
 
@@ -36,7 +55,7 @@ class DataSource {
     }
 
     public function execute($sql = "", $params = []) {
-        
+
         $this->executeSql($sql, $params);
         return  $this->sqlResult;
 
@@ -72,7 +91,7 @@ class DataSource {
         $stmt = $this->conn->prepare($sql);
         $this->sqlResult = $stmt->execute($params);
         return $stmt;
-        
+
     }
-    
+
 }

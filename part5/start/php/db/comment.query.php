@@ -1,24 +1,24 @@
-<?php 
+<?php
 namespace db;
 
 use db\DataSource;
 use model\CommentModel;
 
 class CommentQuery {
-    
+
     public static function fetchByTopicId($topic) {
 
         if(!$topic->isValidId()) {
             return false;
         }
-        
+
         $db = new DataSource;
         $sql = '
-        select 
-            c.*, u.nickname 
+        select
+            c.*, u.nickname
         from comments c
-        inner join users u 
-            on c.user_id = u.id 
+        inner join users u
+            on c.user_id = u.id
         where c.topic_id = :id
             and c.body != ""
             and c.del_flg != 1

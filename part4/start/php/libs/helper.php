@@ -48,16 +48,20 @@ function escape($data) {
     if(is_array($data)) {
 
         foreach($data as $prop => $val) {
-            $data[$prop] = escape($data);
+            $data[$prop] = escape($val);
         }
 
+        return $data;
     } elseif (is_object($data)) {
 
         foreach($data as $prop => $val) {
-            $data->$prop = escape($data);
+            $data->$prop = escape($val);
         }
 
+        return $data;
     } else {
+
         return htmlspecialchars($data,ENT_QUOTES,'UTF-8');
+        
     }
 }

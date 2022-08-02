@@ -36,7 +36,7 @@ class DataSource {
     }
 
     public function execute($sql = "", $params = []) {
-        
+
         $this->executeSql($sql, $params);
         return  $this->sqlResult;
 
@@ -72,7 +72,7 @@ class DataSource {
         $stmt = $this->conn->prepare($sql);
         $this->sqlResult = $stmt->execute($params);
         return $stmt;
-        
+
     }
-    
+
 }
